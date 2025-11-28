@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
@@ -8,7 +8,6 @@
 
 <style>
 :root{
-  /* твоя палитра */
   --bg-1:#04040a; 
   --bg-2:#070a12;
   --bg-3:#0c1220;
@@ -21,7 +20,6 @@
   --text:#e9f0ff; 
   --muted:rgba(233,240,255,0.78);
 
-  /* стекло/линии как в примере */
   --glass:rgba(255,255,255,0.06);
   --glass-2:rgba(255,255,255,0.025);
   --stroke:rgba(255,255,255,0.12);
@@ -33,18 +31,39 @@
 }
 
 *{box-sizing:border-box;margin:0;padding:0;}
-html,body{height:100%;}
-body{
-  font-family:Inter,system-ui,-apple-system,'Segoe UI',Roboto,Arial;
-  color:var(--text);
-  min-height:100vh;
-  display:flex; align-items:center; justify-content:center;
-  padding:28px 16px; overflow-x:hidden;
 
+/* ===== FIX ДЛЯ МОБИЛОК: фон на html, body прозрачный ===== */
+html,body{
+  min-height:100%;
+  height:auto;
+}
+
+/* фон на html — тянется за всей страницей */
+html{
   background:
     radial-gradient(1200px 700px at 80% -10%, rgba(157,123,255,.18), transparent 55%),
     radial-gradient(900px 600px at -10% 110%, rgba(74,214,255,.16), transparent 60%),
     linear-gradient(160deg,var(--bg-1),var(--bg-2) 50%,var(--bg-3));
+  background-attachment: fixed;
+}
+
+body{
+  margin:0;
+  font-family:Inter,system-ui,-apple-system,'Segoe UI',Roboto,Arial;
+  color:var(--text);
+  background:transparent;
+
+  min-height:100dvh;
+  display:flex; align-items:center; justify-content:flex-start;
+
+  /* отступы сверху/снизу + safe-area */
+  padding:
+    calc(20px + env(safe-area-inset-top))
+    16px
+    calc(28px + env(safe-area-inset-bottom));
+
+  overflow-x:hidden;
+  position:relative;
 }
 
 /* шум как в Aviamasters */
@@ -57,7 +76,7 @@ body::after{
   </svg>');
 }
 
-/* ===== ВЕРТИКАЛЬНАЯ КОМПОНОВКА КАК В ТВОЁМ ВАРИАНТЕ ===== */
+/* ===== ВЕРТИКАЛЬНАЯ КОМПОНОВКА ===== */
 .wrap{
   width:min(94vmin,980px);
   max-width:980px;
@@ -70,7 +89,7 @@ body::after{
 /* ===== Шапка ===== */
 .casino-logo-large{
   width:clamp(96px,14vw,175px);
-  margin-top:10px;
+  margin-top: clamp(10px, 3vh, 24px); /* воздух сверху на мобилках */
   border-radius:16px;
   overflow:hidden;
   background:rgba(255,255,255,0.02);
@@ -102,7 +121,7 @@ body::after{
   max-width:760px;
 }
 
-/* ===== ИНСТРУКЦИЯ (в стиле чипа из Aviamasters) ===== */
+/* ===== ИНСТРУКЦИЯ ===== */
 .instr-banner{
   margin-top:4px;
   padding:8px 14px;
@@ -126,7 +145,7 @@ body::after{
   100%{background-position:100% 50%;}
 }
 
-/* ===== ГЛАВНАЯ GLASS-КАРТА (эффекты Aviamasters) ===== */
+/* ===== ГЛАВНАЯ GLASS-КАРТА ===== */
 .main-card{
   position:relative; width:100%;
   border-radius:var(--radius);
@@ -198,7 +217,7 @@ body::after{
   font-size:14px;
 }
 
-/* частицы как в Aviamasters */
+/* частицы */
 .particle{ position:absolute; width:6px; height:6px; border-radius:50%;
   background:radial-gradient(#fff, rgba(255,255,255,0)); opacity:.85; filter:blur(.3px) }
 .p1{ left:18%; top:85%; animation: drift 8s linear infinite }
@@ -210,7 +229,7 @@ body::after{
   to{ transform: translateY(-120px) translateX(20px) }
 }
 
-/* ===== ВНУТРЕННИЕ БЛОКИ В КАРТЕ (VPN + кнопки + бейджи + футер) ===== */
+/* ===== ВНУТРЕННИЕ БЛОКИ В КАРТЕ ===== */
 .card-inner{
   width:100%;
   display:flex; flex-direction:column; align-items:center;
@@ -231,11 +250,11 @@ body::after{
   box-shadow:0 8px 26px rgba(0,0,0,0.35);
 }
 
-/* кнопки — стиль Aviamasters (scanline, glass glow), но твои цвета */
 .buttons{
   display:flex; flex-direction:column; gap:10px;
   width:100%; max-width:430px;
 }
+
 .cta{
   position:relative;
   display:flex; align-items:center; justify-content:center; gap:10px;
@@ -255,7 +274,6 @@ body::after{
   box-shadow:0 18px 44px rgba(0,0,0,.65), 0 0 22px rgba(74,214,255,.28);
 }
 
-/* scanline */
 .cta .scanline{
   position:absolute; left:-40%; top:0; bottom:0; width:35%;
   background: linear-gradient(90deg, transparent, rgba(255,255,255,0.25), transparent);
@@ -266,14 +284,12 @@ body::after{
 }
 @keyframes scanmove{ from{left:-40%} to{left:120%} }
 
-/* TG кнопка — синяя как в твоём первом коде, но со scanline */
 .cta-tg{
   background: linear-gradient(90deg, #0b7fc7, #14a0f0);
   color:#fff;
 }
 .cta-tg img{width:20px;height:20px;display:block}
 
-/* ripple */
 .ripple{
   position:absolute;border-radius:50%;
   transform:translate(-50%,-50%);
@@ -302,7 +318,6 @@ body::after{
   color:var(--muted); opacity:0.95;
 }
 
-/* адаптив */
 @media (max-width:620px){
   .card-inner{ padding:0 12px 14px; }
 }
@@ -315,23 +330,19 @@ body::after{
 <body>
 <main class="wrap">
 
-  <!-- ЛОГО -->
   <div class="casino-logo-large">
     <img src="https://luckybear.bet/_next/static/media/home_logo.a028b260.png" alt="LUCKYBEAR логотип">
   </div>
 
-  <!-- ЗАГОЛОВОК + ОПИСАНИЕ -->
   <div class="title-wrap">
     <div class="h1">LUCKYBEAR — Войти и играть</div>
     <div class="desc">Нажмите «Играть на сайте» — регистрация, бонус и игра!</div>
   </div>
 
-  <!-- ИНСТРУКЦИЯ -->
   <div class="instr-banner">
     <div class="instr-badge">ИНСТРУКЦИЯ</div>
   </div>
 
-  <!-- MAIN GLASS CARD (для эффектов) -->
   <section class="main-card" id="mainCard" data-tilt="on">
     <div class="card-surface">
 
@@ -347,36 +358,33 @@ body::after{
           </div>
         </section>
 
-        <!-- particles -->
         <span class="particle p1"></span>
         <span class="particle p2"></span>
         <span class="particle p3"></span>
         <span class="particle p4"></span>
       </div>
 
-      <!-- всё что ниже — внутри карты, но по компоновке как в твоём сайте -->
       <div class="card-inner">
-
         <nav class="vpn-warning">
           ⚠️ <b>Важно:</b> сайт может не работать без VPN — включите его для корректной работы!
         </nav>
 
         <nav class="buttons">
           <a id="tg2" class="cta cta-tg"
-             href="https://t.me/+cSp54Gya84A1MjYy" target="_blank" rel="noopener noreferrer">
+             href="https://t.me/+9a4f6jcd3k5lNzAy" target="_blank" rel="noopener noreferrer">
             <span class="scanline"></span>
             <img src="https://upload.wikimedia.org/wikipedia/commons/8/82/Telegram_logo.svg" alt="TG">
             TG канал — акции и розыгрыши
           </a>
 
           <a id="playSite" class="cta"
-             href="https://lb333.me/6tjY2A" target="_blank" rel="noopener noreferrer">
+             href="https://lbgame777.xyz/7jy7Ji" target="_blank" rel="noopener noreferrer">
             <span class="scanline"></span>
             Играть на сайте
           </a>
 
           <a id="playTG" class="cta"
-             href="https://t.me/Lucky_Bear_Bars_Bot/app?startapp=bXN0PTB4MzlkNGYwNmEmbT1JTElBJmM9QXZpYXRn"
+             href="https://t.me/Lucky_Bear_SpinPro_Bot/app?startapp=bXN0PTB4NDllMDUxYjkmbT1BcnRlbWx1eCZjPTI3MTE"
              target="_blank" rel="noopener noreferrer">
             <span class="scanline"></span>
             Играть в Telegram
@@ -398,7 +406,7 @@ body::after{
 </main>
 
 <script>
-/* tilt как в Aviamasters */
+/* tilt */
 (function(){
   const el = document.getElementById('mainCard');
   const maxTilt = 6; let rect;
@@ -420,7 +428,7 @@ body::after{
   el.addEventListener('touchend', reset);
 })();
 
-/* ripple на кнопках */
+/* ripple */
 (function(){
   const buttons=document.querySelectorAll('.cta');
   buttons.forEach(btn=>{
